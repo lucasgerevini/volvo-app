@@ -28,6 +28,8 @@ export class CaminhoesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('OnSucess', this.formCaminhao);
+    console.log('OnSucess', this.id);
     this.id = this.route.snapshot.params.id ?? 0;
     if (this.id > 0) {
       this.caminhaoService.obterCaminhao(this.id)
@@ -40,7 +42,7 @@ export class CaminhoesComponent implements OnInit {
       this.formCaminhao = this.formBuilder.group({
         id: this.id,
         anoModelo: ['', Validators.required],
-        anoFabricacao: ['', Validators.required],
+        anoFabricacao: [(new Date()).getFullYear(), Validators.required],
         siglaModelo: ['', Validators.required],
       });
     }
@@ -49,6 +51,7 @@ export class CaminhoesComponent implements OnInit {
     alert(arg);
   }
   onSucess(data: Caminhao) {
+    console.log('OnSucess');
     this.formCaminhao = this.formBuilder.group({
       id: [data.id],
       anoModelo: [data.anoModelo, Validators.required],
@@ -58,22 +61,22 @@ export class CaminhoesComponent implements OnInit {
   }
 
   public onSubmit() {
-
+    console.log('onSubmit');
     if (this.formCaminhao.value.id > 0 && this.formCaminhao.value.id !== null) {
+      console.log('onSubmit if');
       this.caminhaoService.editarCaminhao(this.formCaminhao.value)
         .subscribe(
           data => {
-            this.onSucess(data);
             this.dialogConfirm('Salvo com sucesso!');
             this.router.navigate([`/caminhoes`]);
           },
           err => {
-            this.dialogConfirm('Erro');
-            this.router.navigate([`/caminhoes`]);
-          }
+            this.dialogConfirm(err.error.data);
+          },
         );
     }
     else {
+      console.log('onSubmit else');
       this.caminhaoService.salvarCaminhao(this.formCaminhao.value)
         .subscribe(
           data => {
@@ -82,10 +85,19 @@ export class CaminhoesComponent implements OnInit {
             this.router.navigate([`/caminhoes`]);
           },
           err => {
-            this.dialogConfirm('Erro');
-            this.router.navigate([`/caminhoes`]);
+            this.dialogConfirm(err.error.data);
           },
         );
     }
+  }
+
+  public excluirCaminhao(caminhao: any) {
+    this.caminhaoService.excluirCaminhao(this.formCaminhao.value.id)
+      .subscribe(
+        data => {
+          this.id;
+          this.router.navigate([`/caminhoes`]);
+        }
+      );
   }
 }

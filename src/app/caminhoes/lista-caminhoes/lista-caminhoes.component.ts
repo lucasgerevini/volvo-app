@@ -27,14 +27,12 @@ export class ListaCaminhoesComponent implements OnInit {
     this.caminhaoService.obterCaminhoes()
       .subscribe(
         caminhoes => {
-          console.log('data=>',caminhoes);
           this.dataSource = new MatTableDataSource(caminhoes);
         }
       );
   }
 
   public edit(element: any) {
-    console.log(element);
     this.router.navigate([`/caminhao-detalhe/${element.id}`]);
   }
 }

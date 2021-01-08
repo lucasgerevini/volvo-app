@@ -22,21 +22,25 @@ export class CaminhoesService {
 
   obterCaminhoes(): Observable<Caminhao[]> {
     return this.http
-      .get<Caminhao[]>(this.UrlServiceV1 + "Volvo");
+      .get<Caminhao[]>(this.UrlServiceV1 + "Caminhao");
   }
 
   obterCaminhao(id: Number): Observable<Caminhao> {
     return this.http
-      .get<Caminhao>(`${this.UrlServiceV1}Volvo/${id}`);
+      .get<Caminhao>(`${this.UrlServiceV1}Caminhao/${id}`);
   }
 
   salvarCaminhao(caminhao: Caminhao): Observable<any> {
     return this.http
-      .post<any>(`${this.UrlServiceV1}Volvo`, caminhao);
+      .post<any>(`${this.UrlServiceV1}Caminhao`, caminhao);
   }
 
   editarCaminhao(caminhao: Caminhao): Observable<any> {
     return this.http
-      .put<any>(`${this.UrlServiceV1}Volvo/${caminhao.id}`, caminhao);
+      .put<any>(`${this.UrlServiceV1}Caminhao/${caminhao.id}`, caminhao);
+  }
+  excluirCaminhao(id: Number): Observable<Caminhao> {
+    return this.http
+      .delete<any>(`${this.UrlServiceV1}Caminhao/${id}`);
   }
 }
